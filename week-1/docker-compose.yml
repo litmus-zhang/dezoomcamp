@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+      - POSTGRES_DB=ny_taxi
+    ports:
+      - 3000:5432
+
+
+    volumes:
+      - ./pgdb-volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "airflow"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3 
+    restart: always
+  app:
+    container_name: app
+    build: .
+
+volumes:
+  pgdb-volume:
+
+    
+
